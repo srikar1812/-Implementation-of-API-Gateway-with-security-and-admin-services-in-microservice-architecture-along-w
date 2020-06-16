@@ -1,0 +1,136 @@
+
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="./logout.js"></script>
+  <script src="./verified/refresh.js"></script>
+  <title>Home</title>
+</head>
+<style>
+  *
+  {
+    margin:0;
+    padding:0;
+    font-family:san-serif;
+  }
+  header
+  {
+    background-image: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.5)),url("background.jpg");
+    height: 100vh;
+    background-size:cover;
+    background-position:center;
+  }
+  .mine{
+    padding: 20px;;
+  }
+  .title
+  {
+    position:absolute;
+    top:40%;
+    left:30%;
+    transform:trannslate(-50%,-50%);
+  }
+  .title h1
+  {
+    color:white;
+    font-size:50px;
+  }
+  ul
+  {
+    list-style-type:none;
+    float:right;
+    margin-top:25px;
+  }
+  ul li
+  {
+    display:inline-block;
+    margin-top:25px;
+    font-size:25px;
+  }
+  ul li a
+  {
+    text-decoration:none;
+    color:#fff;
+    padding :5px 20px;
+    border: 1px transparent;
+    transition:0.6s ease
+  }
+  ul li a:hover{
+    background-color:#fff;
+    color:#000;
+  }
+  ul li.active a
+  {
+    background-color:#fff;
+    color:#000;    
+  }
+</style>
+
+<body>
+  <header>
+    <div class="mine">
+      <ul>
+        <li id="home" class="active"><a href="#">Home</a></li>
+        <li id="signin" style="display:none;"><a href=./signin.html>Signin</a></li>
+        <li id="register" style="display:none;"><a href=./register.html>Signup</a></li>
+        <li id="welcome" style="display:none;"><a href=./verified/welcome.html>Welcome</a></li>
+        <li id="admin" style="display:none;"><a href=./verified/admin.html>Admin</a></li>
+        <li id="logout" style="display:none;" onclick=logout()><a href=./index.html>Logout</a></li>
+      </ul>
+    </div>
+  </header>
+  <div class="title">
+    <h1>Our Practice School Project</h1>
+    <img src="./bits.jpg" style="width:350px;height:200px;padding: 20px;">
+    <img src="./posidex.png" style="width:200px;height:200px;padding: 20px;">
+    <div>
+    </div>
+  </div>
+  <script>
+    let session=false;
+    if(localStorage.getItem("TTLRefresh")){//check for existence
+      if( (new Date()).getTime() < (new Date(localStorage.getItem("TTLRefresh"))).getTime()){//check for validity of existence
+        console.log('in TTL');
+        if(sessionStorage.getItem("session_data")){//check on existing, if in session 
+          console.log('has session data');
+          session=true;
+        }
+        else{
+          console.log('no session data');
+          refresh();
+          sesssion=true;
+        }
+      }
+      else{
+        console.log('not in TTL');
+        session=false;
+      }
+    }
+    else{
+      console.log("not in TTL");
+      session=false;
+    }
+    
+    
+    if(session){
+      if((sessionStorage.getItem("response_role"))==("ROLE_ADMIN")){
+        document.getElementById("admin").style.display = "list-item";
+      }
+      else{
+        document.getElementById("admin").style.display = "none";
+      }
+      document.getElementById("welcome").style.display = "list-item";
+      document.getElementById("signin").style.display = "none";
+      document.getElementById("register").style.display = "none";
+      document.getElementById("logout").style.display = "list-item";
+    }
+    else{
+      document.getElementById("admin").style.display = "none";
+      document.getElementById("welcome").style.display = "none";
+      document.getElementById("signin").style.display = "list-item";
+      document.getElementById("register").style.display = "list-item";
+      document.getElementById("logout").style.display = "none";
+    }
+  </script>
+</body>
+</html>
